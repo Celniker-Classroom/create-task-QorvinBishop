@@ -1,13 +1,47 @@
+<!-- This project codes the encryption and decryption of an affine cipher, as well as the input for the custom 2-digit key. This cipher uses a 2-character key (a, b) consisting of 2 integers that represent
+    the coefficients in the linear function: f(x) = (ax + b) mod 26. For example, given a key of (1,2) the equation would be represented as f(x) = (x + 2) mod 26. We assign the letters A-Z numerical values in increasing order, where A = 0 and Z = 25. The encrypted message is based
+    on the above function (where the original values of the letters are inputs). The outputs are then converted back to letters based on the letter-to-number assignment. To decode an affine cipher, the value of the coefficient "a" must be coprime to 26.  -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Affine Cipher</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Your html goes here...</h1>
-    <br>See the <a href="README.md">README</a> for project details
+    <h1>Affine Cipher</h1>
+    <p>This cipher uses a 2-character key (a, b) consisting of 2 integers that represent
+    the coefficients in the linear function: f(x) = (ax + b) mod 26. For example, given a key of (1,2) the equation would be
+    represented as f(x) = (x + 2) mod 26.</p>
+    <p>We assign the letters A-Z numerical values in increasing order, where A = 0 and Z = 25. The encrypted message is based
+    on the above function (where the original values of the letters are inputs).</p>
+    <p>The outputs are then converted back to letters based on the letter-to-number assignment.</p>
+    <p>To decode an affine cipher, the value of the coefficient "a" must be coprime to 26.</p>
+
+    <h2>2-digit key</h2>
+    <h3>Enter a:</h3>
+    <input type="password", placeholder="Enter an integer 0 to 25 inclusive, coprime to 26">
+
+    <h3>Enter b:</h3>
+    <input type="password", placeholder="Enter an integer 0 to 25 inclusive">
+    
+    <h2>Encryption</h2>
+    <h3>Plaintext:</h3>
+    <input placeholder="Enter text to encrypt:">
+
+    <h3>Ciphertext:</h3>
+    <p id="e_text">Encrypted text</p>
+
+    <h2>Decryption</h2>
+    <h3>Ciphertext:</h3>
+    <input placeholder="Enter text to decrypt:">
+
+    <h3>Decrypted text:</h3>
+    <p id="e_text">Decrypted text</p>
+
+
+    
 </body>
 </html>
