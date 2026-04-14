@@ -2,7 +2,9 @@
 
 // useful constants
 const coprime26 = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
-
+const lowerASCII = 65;
+const upperASCII = 97;
+const ALPHABET_SIZE = 26
 document.getElementById("encryptBtn").addEventListener("click", function(){
     // user inputted key values
     let keyA = parseInt(document.getElementById("keyA").value);
@@ -29,55 +31,39 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
 })
 
 document.getElementById("decryptBtn").addEventListener("click", function(){
-    
+    // code decryption stuff
 })
 
 function letterToNum(letter){
-    let num = letter.charCodeAt(0);
-    return num;
+    return letter.charCodeAt(0);
 }
 
 function numToLetter(num){
-    let letter = String.fromCharCode(num); 
-    return letter;
+    return String.fromCharCode(num); 
 }
 // numbers outside the function are all ASCII values
 function encryptNum(num, a, b){
-    let output;
-    if (65 <= num && num <= 90){
-        num -= 65;
-        output = ((a * num) + b) % 26;
-        output += 65;
+    if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
+        return ((a * (num - lowerASCII)) + b) % ALPHABET_SIZE + lowerASCII;
     }
-    else if (97 <= num && num <= 122){
-        num -= 97;
-        output = ((a * num) + b) % 26;
-        output += 97;
+    else if (upperASCII <= num && num <= upperASCII + ALPHABET_SIZE - 1){
+        return ((a * (num - upperASCII)) + b) % ALPHABET_SIZE + upperASCII;
     }
-    return output;
 }
 // fix modular inverse stuff
 function decryptNum(num, a, b){
-    let output;
-    if (65 <= num && num <= 90){
-        num -= 65;
-        output = ((num - b)/a) % 26;
-        output += 65;
+    if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
+        return (((num - lowerASCII) - b)/a) % ALPHABET_SIZE + lowerASCII;
     }
-    else if (97 <= num && num <= 122){
-        num -= 97;
-        output = ((num - b)/a) % 26;
-        output += 97;
+    else if (upperASCII <= num && num <= upperASCII + ALPHABET_SIZE - 1){
+        return (((num - upperASCII) - b)/a) % ALPHABET_SIZE + upperASCII;
     }
-    return output;
 }
 
 function encryption(char, a, b){
-    let output = numToLetter(encryptNum(letterToNum(char), a, b));
-    return output;
+    return numToLetter(encryptNum(letterToNum(char), a, b));
 }
 
 function decryption(char, a, b){
-    let output = numToLetter(decryptNum(letterToNum(char), a, b));
-    return output;
+    return numToLetter(decryptNum(letterToNum(char), a, b));
 }
