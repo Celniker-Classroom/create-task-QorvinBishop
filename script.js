@@ -24,7 +24,7 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
         return;
     }
     let plaintext_string = document.getElementById("plaintext").value;
-    document.getElementById("encryptedText").textContent = charsToString(encrypt_transform(plaintext_string));
+    document.getElementById("encryptedText").textContent = charsToString(affine_transform(keyA, keyB, plaintext_string, true));
 })
 
 document.getElementById("decryptBtn").addEventListener("click", function(){
@@ -45,18 +45,7 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
         return;
     }
     let ciphertext_string = document.getElementById("ciphertext").value;
-    let plaintext_array = [];
-    for (let i = 0; i < ciphertext_string.length; i++){
-        let char = ciphertext_string.charAt(i);
-        // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
-        if (/[a-zA-Z]/.test(char)){
-            plaintext_array.push(decryption(char, keyA, keyB));
-        }
-        else{
-            plaintext_array.push(char);
-        }
-    }
-    document.getElementById("decryptedText").textContent = charsToString(plaintext_array);
+    document.getElementById("decryptedText").textContent = charsToString(affine_transform(keyA, keyB, ciphertext_string, false));
 })
 
 function letterToNum(letter){
@@ -118,17 +107,22 @@ function charsToString(array){
     return string;
 }
 
-function encrypt_transform(plaintext_string){
-    let ciphertext_array = [];
-    for (let i = 0; i < plaintext_string.length; i++){
-        let char = plaintext_string.charAt(i);
+function affine_transform(keyA, keyB, input_array, encrypt_mode = true){
+    let output_array = [];
+    for (let i = 0; i < input_array.length; i++){
+        let char = input_array.charAt(i);
         // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
         if (/[a-zA-Z]/.test(char)){
-            ciphertext_array.push(encryption(char, keyA, keyB));
+            if (encrypt_mode){
+                output_array.push(encryption(char, keyA, keyB));
+            }
+            else{
+                output_array.push(decryption(char, keyA, keyB));
+            }
         }
         else{
-            ciphertext_array.push(char);
+            output_array.push(char);
         }
     }
-    return ciphertext_array
+    return output_array;
 }
