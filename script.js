@@ -2,18 +2,25 @@
 
 // useful constants
 const coprime26 = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
-const lowerASCII = 65;
-const upperASCII = 97;
+const lowerASCII = 97;
+const upperASCII = 65;
 const ALPHABET_SIZE = 26
 
 document.getElementById("encryptBtn").addEventListener("click", function(){
     // user inputted key values
-    let keyA = parseInt(document.getElementById("keyA").value);
-    let keyB = parseInt(document.getElementById("keyB").value);
+    let keyA = Math.floor(document.getElementById("keyA").value);
+    let keyB = Math.floor(document.getElementById("keyB").value);
 
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
-        alert('Key "a" must be coprime to 26');
+        document.getElementById("encryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
+        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = '';}, 2000);
+        return;
+    }
+    // checks if "b" value is integer and in range
+    else if(!(0 <= keyB && keyB <= 25)){
+        document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range';
+        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = '';}, 2000);
         return;
     }
     let plaintext_string = document.getElementById("plaintext").value;
@@ -34,12 +41,18 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
 document.getElementById("decryptBtn").addEventListener("click", function(){
     // code decryption stuff
     // user inputted key values
-    let keyA = parseInt(document.getElementById("keyA").value);
-    let keyB = parseInt(document.getElementById("keyB").value);
+    let keyA = Math.floor(document.getElementById("keyA").value);
+    let keyB = Math.floor(document.getElementById("keyB").value);
 
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
-        alert('Key "a" must be coprime to 26');
+        document.getElementById("decryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
+        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = '';}, 2000);
+        return;
+    }
+    else if(!(0 <= keyB && keyB <= 25)){
+        document.getElementById("decryptBtnMsg").textContent = 'Key "b" MUST be in range';
+        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = '';}, 2000);
         return;
     }
     let ciphertext_string = document.getElementById("ciphertext").value;
@@ -73,14 +86,18 @@ function encryptNum(num, a, b){
         return ((a * (num - upperASCII)) + b) % ALPHABET_SIZE + upperASCII;
     }
 }
-// fix modular inverse stuff
+// 
 function decryptNum(num, a, b){
     let a_inv = MMI(a, ALPHABET_SIZE);
     if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
-        return (a_inv*((num - lowerASCII) - b)) % ALPHABET_SIZE + lowerASCII;
+        let decryptedValue = (a_inv*((num - lowerASCII) - b)) % ALPHABET_SIZE;
+        if (decryptedValue < 0) decryptedValue += ALPHABET_SIZE; // js modulo can output negative so this ensures decryptedValue > 0
+        return decryptedValue + lowerASCII;
     }
     else if (upperASCII <= num && num <= upperASCII + ALPHABET_SIZE - 1){
-        return (a_inv*((num - upperASCII) - b)) % ALPHABET_SIZE + upperASCII;
+        let decryptedValue = (a_inv*((num - upperASCII) - b)) % ALPHABET_SIZE;
+        if (decryptedValue < 0) decryptedValue += ALPHABET_SIZE;
+        return decryptedValue + upperASCII;
     }
 }
 

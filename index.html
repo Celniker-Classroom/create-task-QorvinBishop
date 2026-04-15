@@ -22,16 +22,17 @@
             on the above function (where the original values of the letters are inputs).</p>
             <p>The outputs are then converted back to letters based on the letter-to-number assignment.</p>
             <p>To decode an affine cipher, the value of the coefficient "a" must be coprime to 26.</p>
+            <p>Note: if non-integers in range are inputted for keys, they will be rounded down to the nearest integer.</p>
         </div>
 
         <div class="key-section">
             <h2>2-digit key</h2>
             <div class="input-group">
-                <h3>Enter an integer 1 to 25 (inclusive, coprime to 26) for "a":</h3>
+                <h3 id="A_title">Enter an integer 1 to 25 (inclusive, coprime to 26) for "a":</h3>
                 <input type="number" id="keyA" placeholder='Enter "a"' min="1" max="25" step="1">
             </div>
             <div class="input-group">
-                <h3>Enter an integer 0 to 25 (inclusive) for "b":</h3>
+                <h3 id="B_title">Enter an integer 0 to 25 (inclusive) for "b":</h3>
                 <input type="number" id="keyB" placeholder='Enter "b"' min="0" max="25" step="1">
             </div>
         </div>
@@ -42,6 +43,7 @@
                 <h3>Plaintext:</h3>
                 <input id="plaintext" placeholder="Enter text to encrypt">
                 <button id="encryptBtn">Encrypt</button>
+                <p id="encryptBtnMsg"></p>
             </div>
             <div class="output-group">
                 <h3>Ciphertext:</h3>
@@ -55,6 +57,7 @@
                 <h3>Ciphertext:</h3>
                 <input id="ciphertext" placeholder="Enter text to decrypt">
                 <button id="decryptBtn">Decrypt</button>
+                <p id="decryptBtnMsg"></p>
             </div>
             <div class="output-group">
                 <h3>Plaintext:</h3>
