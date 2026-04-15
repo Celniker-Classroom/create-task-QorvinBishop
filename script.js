@@ -4,7 +4,7 @@
 const coprime26 = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
 const lowerASCII = 97;
 const upperASCII = 65;
-const ALPHABET_SIZE = 26
+const ALPHABET_SIZE = 26;
 
 document.getElementById("encryptBtn").addEventListener("click", function(){
     // user inputted key values
@@ -14,28 +14,17 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
         document.getElementById("encryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
-        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = '';}, 2000);
+        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     // checks if "b" value is integer and in range
     else if(!(0 <= keyB && keyB <= 25)){
         document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range';
-        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = '';}, 2000);
+        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     let plaintext_string = document.getElementById("plaintext").value;
-    let ciphertext_string = "";
-    for (let i = 0; i < plaintext_string.length; i++){
-        let char = plaintext_string.charAt(i);
-        // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
-        if (/[a-zA-Z]/.test(char)){
-            ciphertext_string += encryption(char, keyA, keyB);
-        }
-        else{
-            ciphertext_string += char;
-        }
-    }
-    document.getElementById("encryptedText").textContent = ciphertext_string;
+    document.getElementById("encryptedText").textContent = charsToString(encrypt_transform(plaintext_string));
 })
 
 document.getElementById("decryptBtn").addEventListener("click", function(){
@@ -47,27 +36,27 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
         document.getElementById("decryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
-        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = '';}, 2000);
+        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     else if(!(0 <= keyB && keyB <= 25)){
         document.getElementById("decryptBtnMsg").textContent = 'Key "b" MUST be in range';
-        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = '';}, 2000);
+        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     let ciphertext_string = document.getElementById("ciphertext").value;
-    let plaintext_string = "";
+    let plaintext_array = [];
     for (let i = 0; i < ciphertext_string.length; i++){
         let char = ciphertext_string.charAt(i);
         // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
         if (/[a-zA-Z]/.test(char)){
-            plaintext_string += decryption(char, keyA, keyB);
+            plaintext_array.push(decryption(char, keyA, keyB));
         }
         else{
-            plaintext_string += char;
+            plaintext_array.push(char);
         }
     }
-    document.getElementById("decryptedText").textContent = plaintext_string;
+    document.getElementById("decryptedText").textContent = charsToString(plaintext_array);
 })
 
 function letterToNum(letter){
@@ -86,7 +75,7 @@ function encryptNum(num, a, b){
         return ((a * (num - upperASCII)) + b) % ALPHABET_SIZE + upperASCII;
     }
 }
-// 
+
 function decryptNum(num, a, b){
     let a_inv = MMI(a, ALPHABET_SIZE);
     if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
@@ -119,4 +108,27 @@ function MMI(x, a){
         }
     }
     return x_inv;
+}
+
+function charsToString(array){
+    let string = "";
+    for (let i = 0; i < array.length; i++){
+        string += array[i];
+    }
+    return string;
+}
+
+function encrypt_transform(plaintext_string){
+    let ciphertext_array = [];
+    for (let i = 0; i < plaintext_string.length; i++){
+        let char = plaintext_string.charAt(i);
+        // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
+        if (/[a-zA-Z]/.test(char)){
+            ciphertext_array.push(encryption(char, keyA, keyB));
+        }
+        else{
+            ciphertext_array.push(char);
+        }
+    }
+    return ciphertext_array
 }
