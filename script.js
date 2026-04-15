@@ -107,10 +107,10 @@ function charsToString(array){
     return string;
 }
 
-function affine_transform(keyA, keyB, input_array, encrypt_mode = true){
+function affine_transform(keyA, keyB, input_string, encrypt_mode = true){
     let output_array = [];
-    for (let i = 0; i < input_array.length; i++){
-        let char = input_array.charAt(i);
+    for (let i = 0; i < input_string.length; i++){
+        let char = input_string.charAt(i);
         // /[a-zA-Z]/ checks only english characters, while isalphabetic() checks accented letters and others
         if (/[a-zA-Z]/.test(char)){
             if (encrypt_mode){
