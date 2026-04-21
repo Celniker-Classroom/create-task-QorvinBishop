@@ -39,7 +39,7 @@
 
         <div class="encryption-section">
             <h2>Encryption</h2>
-            <div class="input-group"></div>
+            <div class="input-group">
                 <h3>Plaintext:</h3>
                 <textarea id="plaintext" rows="4" cols="50" placeholder="Enter text to encrypt"></textarea>
                 <button id="encryptBtn">Encrypt</button>
@@ -50,7 +50,7 @@
                 <p id="encryptedText">Encrypted text will appear here</p>
             </div>
         </div>
-
+        
         <div class="decryption-section">
             <h2>Decryption</h2>
             <div class="input-group">
@@ -62,6 +62,23 @@
             <div class="output-group">
                 <h3>Plaintext:</h3>
                 <p id="decryptedText">Decrypted text will appear here</p>
+            </div>
+        </div>
+
+        <div class="find-key-section">
+            <h2>Find Key</h2>
+            <div class="input-group">
+                <h3>2-character Plaintext:</h3>
+                <input id="knownCiphertext" placeholder="Enter 2 characters"></input>
+                <h3>2-character Decrypted Text:</h3>
+                <input id="knownPlaintext" placeholder="Enter decrypted characters"></input>
+                <br><br>
+                <button id="findKeyBtn">Find Key</button>
+                <p id="findKeyBtnMsg"></p>
+            </div>
+            <div class="output-group">
+                <p id="aKey">a:</p>
+                <p id="bKey">b:</p>
             </div>
         </div>
     </div>
