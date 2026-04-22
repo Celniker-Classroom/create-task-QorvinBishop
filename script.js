@@ -14,12 +14,14 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
         document.getElementById("encryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
+        document.getElementById("encryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     // checks if "b" value is integer and in range
     else if(!(0 <= keyB && keyB <= 25)){
         document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range'; // warning text
+        document.getElementById("encryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000); // clears text after 2s
         return;
     }
@@ -36,11 +38,13 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
     // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
         document.getElementById("decryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
+        document.getElementById("decryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
         return;
     }
     else if(!(0 <= keyB && keyB <= 25)){
         document.getElementById("decryptBtnMsg").textContent = 'Key "b" MUST be in range';
+        document.getElementById("decryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
         return;
     }
@@ -49,44 +53,77 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
 })
 
 document.getElementById("findKeyBtn").addEventListener("click",function(){
+    // clear previous keys
+    document.getElementById("aKey").textContent = "a:";
+    document.getElementById("bKey").textContent = "b:";
     // store known user inputs
     let knownPlaintext = document.getElementById("knownPlaintext").value;
     let knownCiphertext = document.getElementById("knownCiphertext").value;
     // [A-Za-z] tests for alphabet characters, {2} tests for length
     if (!(/^[A-Za-z]{2}$/.test(knownPlaintext)) || !(/^[A-Za-z]{2}$/.test(knownCiphertext))) {
         document.getElementById("findKeyBtnMsg").textContent = "Both inputs must be exactly 2 characters A-Z or a-z";
+        document.getElementById("findKeyBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''}, 2000);
         return;
     }
 
-    let plaintextNums = [letterToNumValue(knownPlaintext.charAt(0)),letterToNumValue(knownPlaintext.charAt(1))];
-    let ciphertextNums = [letterToNumValue(knownCiphertext.charAt(0)),letterToNumValue(knownCiphertext.charAt(1))];
+    let p1 = letterToNumValue(knownPlaintext.charAt(0));
+    let p2 = letterToNumValue(knownPlaintext.charAt(1));
+    let c1 = letterToNumValue(knownCiphertext.charAt(0));
+    let c2 = letterToNumValue(knownCiphertext.charAt(1));
 
-    let foundKey = false;
-    let foundA;
-    let foundB;
+    if (p1 === p2){
+        if (c1 === c2){ // if both pairs are the same, then there are more than 1 unique solution
+            document.getElementById("findKeyBtnMsg").textContent = "Warning: Multiple keys possible. Showing first valid key.";
+            document.getElementById("findKeyBtnMsg").style.color = "orange";
+        }
+        else{ // if plaintexts pair is the same but ciphertexts are not, then impossible and no solution
+            document.getElementById("findKeyBtnMsg").textContent = "Error: No valid keys possible.";
+            document.getElementById("findKeyBtnMsg").style.color = "red";
+            setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''; return;}, 2000);
+        }
+    }
+    else{
+        if (c1 === c2){ // also impossible
+            document.getElementById("findKeyBtnMsg").textContent = "Error: No valid keys possible.";
+            document.getElementById("findKeyBtnMsg").style.color = "red";
+            setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''; return;}, 2000);
+        }
+    }
+
+    let foundKeys = [];
 
     for (let a of coprime26){ // tries each possible "a" value
         // Original affine equation: y = (ax + b) mod 26
         // Solve for a b given y and x: b = (y - ax) mod 26
-        let b = (ciphertextNums[0] - (a * plaintextNums[0])) % ALPHABET_SIZE;
+        let b = (c1 - (a * p1)) % ALPHABET_SIZE;
         if (b < 0) b += ALPHABET_SIZE;
         // verify key
-        let expectedCipher = (a * plaintextNums[1] + b) % ALPHABET_SIZE;
+        let expectedCipher = (a * p2 + b) % ALPHABET_SIZE;
 
-        if (expectedCipher === ciphertextNums[1]){
-            foundA = a;
-            foundB = b;
-            foundKey = true;
-            break;
+        if (expectedCipher === c2){
+            foundKeys.push({a: a, b: b}); // pushes every key that works
         }
     }
-
-    if (foundKey){
-        document.getElementById("aKey").textContent = "a: " + foundA;
-        document.getElementById("bKey").textContent = "b: " + foundB;
-        document.getElementById("findKeyBtnMsg").textContent = "Key found successfully!";
-        // document.getElementById("findKeyBtnMsg").style.color = "green";
+    // uses number of valid keys to conditionally display text
+    if (foundKeys.length === 0){
+        document.getElementById("findKeyBtnMsg").textContent = "Error: No valid key found. Make sure inputs are consistent with affine cipher.";
+        document.getElementById("findKeyBtnMsg").style.color = "red";
+        setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''; return;}, 2000);
+    }
+    else if (foundKeys.length === 1){
+        document.getElementById("aKey").textContent = "a: " + foundKeys[0].a;
+        document.getElementById("bKey").textContent = "b: " + foundKeys[0].b;
+        document.getElementById("findKeyBtnMsg").textContent = "Unique Key found successfully!";
+        document.getElementById("findKeyBtnMsg").style.color = "green";
+        setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''; return;}, 2000);
+    }
+    else{ // not a single unique key
+        document.getElementById("aKey").textContent = "a: " + foundKeys[0].a;
+        document.getElementById("bKey").textContent = "b: " + foundKeys[0].b;
+        document.getElementById("findKeyBtnMsg").textContent = "Warning: Multiple keys possible. Showing first valid key.";
+        document.getElementById("findKeyBtnMsg").style.color = "orange";
+        setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''; return;}, 2000);
     }
 })
 
