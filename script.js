@@ -19,8 +19,8 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
     }
     // checks if "b" value is integer and in range
     else if(!(0 <= keyB && keyB <= 25)){
-        document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range';
-        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000);
+        document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range'; // warning text
+        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000); // clears text after 2s
         return;
     }
     let plaintext_string = document.getElementById("plaintext").value;
@@ -47,6 +47,58 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
     let ciphertext_string = document.getElementById("ciphertext").value;
     document.getElementById("decryptedText").textContent = charsToString(affine_transform(keyA, keyB, ciphertext_string, false));
 })
+
+document.getElementById("findKeyBtn").addEventListener("click",function(){
+    // store known user inputs
+    let knownPlaintext = document.getElementById("knownPlaintext").value;
+    let knownCiphertext = document.getElementById("knownCiphertext").value;
+    // [A-Za-z] tests for alphabet characters, {2} tests for length
+    if (!(/^[A-Za-z]{2}$/.test(knownPlaintext)) || !(/^[A-Za-z]{2}$/.test(knownCiphertext))) {
+        document.getElementById("findKeyBtnMsg").textContent = "Both inputs must be exactly 2 characters A-Z or a-z";
+        setTimeout(() => {document.getElementById("findKeyBtnMsg").textContent = ''}, 2000);
+        return;
+    }
+
+    let plaintextNums = [letterToNumValue(knownPlaintext.charAt(0)),letterToNumValue(knownPlaintext.charAt(1))];
+    let ciphertextNums = [letterToNumValue(knownCiphertext.charAt(0)),letterToNumValue(knownCiphertext.charAt(1))];
+
+    let foundKey = false;
+    let foundA;
+    let foundB;
+
+    for (let a of coprime26){ // tries each possible "a" value
+        // Original affine equation: y = (ax + b) mod 26
+        // Solve for a b given y and x: b = (y - ax) mod 26
+        let b = (ciphertextNums[0] - (a * plaintextNums[0])) % ALPHABET_SIZE;
+        if (b < 0) b += ALPHABET_SIZE;
+        // verify key
+        let expectedCipher = (a * plaintextNums[1] + b) % ALPHABET_SIZE;
+
+        if (expectedCipher === ciphertextNums[1]){
+            foundA = a;
+            foundB = b;
+            foundKey = true;
+            break;
+        }
+    }
+
+    if (foundKey){
+        document.getElementById("aKey").textContent = "a: " + foundA;
+        document.getElementById("bKey").textContent = "b: " + foundB;
+        document.getElementById("findKeyBtnMsg").textContent = "Key found successfully!";
+        // document.getElementById("findKeyBtnMsg").style.color = "green";
+    }
+})
+
+function letterToNumValue(letter){ // function converts letters to 0-25 values rather than ASCII
+    let num = letterToNum(letter);
+    if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
+        return num - lowerASCII;
+    }
+    else if (upperASCII <= num && num <= upperASCII + ALPHABET_SIZE - 1){
+        return num - upperASCII;
+    }
+}
 
 function letterToNum(letter){
     return letter.charCodeAt(0);
