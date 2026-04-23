@@ -11,6 +11,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+
+
+    
+    <div id="loader-wrapper">
+    <div class="loader"></div>
+    <h3>System Locked</h3>
+    <p>Decrypt: <strong>IHHWVC</strong></p>
+    <div class="challenge-box">
+        <input type="text" id="decrypt-input" placeholder="Plaintext here...">
+        <button onclick="checkAccess()">Decrypt</button>
+    </div>
+    <!-- This will show Success, Error, or Override messages -->
+    <p id="status-msg" style="margin-top: 15px; font-weight: bold;"></p>
+</div>
+
+
+
+
     <div class="container">
         <h1>Affine Cipher</h1>
 

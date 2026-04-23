@@ -215,3 +215,64 @@ function affine_transform(keyA, keyB, input_string, encrypt_mode = true){
     }
     return output_array;
 }
+
+
+
+
+
+
+
+// Loading screen
+const CORRECT_ANSWER = "AFFINE";
+let attempts = 0;
+const MAX_ATTEMPTS = 3;
+
+function hideLoader() {
+    const loader = document.getElementById("loader-wrapper");
+    loader.classList.add("loader-hidden");
+    loader.addEventListener("transitionend", () => {
+        if (loader.parentNode) document.body.removeChild(loader);
+    });
+}
+function triggerDramaticSuccess() {
+    const loader = document.getElementById("loader-wrapper");
+    const statusMsg = document.getElementById("status-msg");
+
+    // 1. Add the flash and pulsing text
+    loader.classList.add("success-flash");
+    statusMsg.classList.add("pulse-text");
+    statusMsg.innerText = "ACCESS GRANTED";
+    statusMsg.style.color = "#2ecc71";
+
+    // 2. Wait a moment for the user to enjoy the win, then zoom out
+    setTimeout(() => {
+        loader.classList.add("zoom-out-exit");
+    }, 1000);
+
+    // 3. Finally remove from DOM
+    setTimeout(() => {
+        if (loader.parentNode) {
+            document.body.removeChild(loader);
+        }
+    }, 1800);
+}
+
+function checkAccess() {
+    const userInput = document.getElementById("decrypt-input").value.toUpperCase().trim();
+    const statusMsg = document.getElementById("status-msg");
+
+    if (userInput === CORRECT_ANSWER) {
+        triggerDramaticSuccess();
+    } else {
+        attempts++;
+        if (attempts < MAX_ATTEMPTS) {
+            statusMsg.style.color = "#e74c3c"; // Red
+            statusMsg.innerText = `Access Denied. ${MAX_ATTEMPTS - attempts} tries left.`;
+            document.getElementById("decrypt-input").value = "";
+        } else {
+            statusMsg.style.color = "#f39c12"; // Orange
+            statusMsg.innerText = "Too many attempts. Bypassing security...";
+            setTimeout(hideLoader, 2000); // Delay for the "override" message
+        }
+    }
+}
