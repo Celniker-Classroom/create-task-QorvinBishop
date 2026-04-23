@@ -1,5 +1,102 @@
 /* Add Global styles here */
-input[type="number"] {
-  width: 67px;
-  text-wrap: auto;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+h2 {
+    color: #2980b9;
+    margin-top: 30px;
+    border-left: 6.7px solid #3498db;
+    padding-left: 10px;
+}
+h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+.description {
+    background: #ecf0f1;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+input[type="number"], 
+input[type="text"], 
+textarea{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+    font-size: 1rem;
+}
+textarea {
+    resize: vertical;
+}
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s ease; /* smooth transition */
+}
+button:hover {
+    background-color: #2980b9;
+}
+button:active {
+    transform: scale(0.92); /* shrinks to 92%*/
+}
+.output-group {
+    background: #f9f9f9;
+    padding: 15px;
+    border: 1px dashed #bdc3c7;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+::placeholder {
+    font-family: monospace;
+}
+
+
+#encryptedText, #decryptedText {
+    font-family: monospace;
+    font-size: 1rem;
+    word-break: break-all; /* prevent text overflow by allowing browser to insert line break between any 2 characters */
+    color: black;
+}
+#encryptBtnMsg, #decryptBtnMsg, #findKeyBtnMsg {
+    margin-top: 5px;
+}
+.find-key-section .output-group p {
+    margin: 5px 0;
+}
+.find-key-section .output-group ::first-letter{
+  font-weight: bold; /* only makes first letter (a: or b:) bold and not the output keys */
+}
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
 }

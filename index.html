@@ -19,10 +19,8 @@
             the coefficients in the linear function: f(x) = (ax + b) mod 26. For example, given a key of (1, 2) the equation would be
             represented as f(x) = (x + 2) mod 26. (Note that if a = 1, the Affine Cipher is just a Caesar cipher.)</p>
             <p>We assign the letters A-Z numerical values in increasing order, where A = 0 and Z = 25. The encrypted message is based
-            on the above function (where the original values of the letters are inputs).</p>
-            <p>The outputs are then converted back to letters based on the letter-to-number assignment.</p>
-            <p>To decode an affine cipher, the value of the coefficient "a" must be coprime to 26.</p>
-            <p>Note: if non-integers in range are inputted for keys, they will be rounded down to the nearest integer.</p>
+            on the above function (where the original values of the letters are inputs). The outputs are then converted back to letters based on the letter-to-number assignment.</p>
+            <p>To decode an affine cipher, the value of the coefficient "a" must be coprime to 26. (Note that if non-integers in range are inputted for keys, they will be rounded down to the nearest integer.)</p>
         </div>
 
         <div class="key-section">
@@ -68,10 +66,10 @@
         <div class="find-key-section">
             <h2>Find Key</h2>
             <div class="input-group">
-                <h3>2-character Ciphertext:</h3>
-                <input id="knownCiphertext" placeholder="Enter 2 characters"></input>
                 <h3>2-character Decrypted Text:</h3>
-                <input id="knownPlaintext" placeholder="Enter decrypted characters"></input>
+                <input type="text" id="knownPlaintext" placeholder="Enter 2 decrypted characters"></input>
+                <h3>2-character Ciphertext:</h3>
+                <input type="text" id="knownCiphertext" placeholder="Enter corresponding encrypted characters"></input>
                 <br><br>
                 <button id="findKeyBtn">Find Key</button>
                 <p id="findKeyBtnMsg"></p>
