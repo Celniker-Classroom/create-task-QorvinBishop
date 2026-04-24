@@ -6,6 +6,23 @@ const lowerASCII = 97;
 const upperASCII = 65;
 const ALPHABET_SIZE = 26;
 
+document.getElementById("clearAllBtn").addEventListener("click", function(){
+    // clear key section
+    document.getElementById("keyA").value = "";
+    document.getElementById("keyB").value = "";
+    // reset encryption section
+    document.getElementById("plaintext").value = "";
+    document.getElementById("encryptedText").textContent = "Encrypted text will appear here";
+    // reset decryption section
+    document.getElementById("ciphertext").value = "";
+    document.getElementById("decryptedText").textContent = "Decrypted text will appear here";
+    // reset find key section
+    document.getElementById("knownPlaintext").value = "";
+    document.getElementById("knownCiphertext").value = "";
+    document.getElementById("aKey").textContent = "a:";
+    document.getElementById("bKey").textContent = "b:";
+})
+
 document.getElementById("encryptBtn").addEventListener("click", function(){
     // user inputted key values
     let keyA = Math.floor(document.getElementById("keyA").value);

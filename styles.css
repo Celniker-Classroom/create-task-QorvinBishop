@@ -79,6 +79,12 @@ button:active {
     font-family: monospace;
 }
 
+#clearAllBtn{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    background-color: #e74c3c;
+}
 
 #encryptedText, #decryptedText {
     font-family: monospace;
