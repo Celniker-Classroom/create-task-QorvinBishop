@@ -33,6 +33,16 @@ document.getElementById("randomKeyBtn").addEventListener("click", function(){
     document.getElementById("keyA").value = randomA;
     document.getElementById("keyB").value = randomB;
 })
+document.getElementById("plaintext").addEventListener("input", function(){ // input monitors input area
+    // length of input
+    let count = this.value.length;
+    document.getElementById("plaintextCount").textContent = "Characters: " + count;
+})
+document.getElementById("ciphertext").addEventListener("input", function(){ // input monitors input area
+    // length of input
+    let count = this.value.length;
+    document.getElementById("ciphertextCount").textContent = "Characters: " + count;
+})
 
 document.getElementById("encryptBtn").addEventListener("click", function(){
     // user inputted key values

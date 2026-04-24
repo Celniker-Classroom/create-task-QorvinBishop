@@ -99,6 +99,13 @@ button:active {
 #encryptBtnMsg, #decryptBtnMsg, #findKeyBtnMsg {
     margin-top: 5px;
 }
+.charCount{
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: right;
+}
 .find-key-section .output-group p {
     margin: 5px 0;
 }
