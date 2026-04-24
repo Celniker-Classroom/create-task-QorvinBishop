@@ -16,16 +16,16 @@
 
     
     <div id="loader-wrapper">
-    <div class="loader"></div>
-    <h3>System Locked</h3>
-    <p>Decrypt: <strong>IHHWVC</strong></p>
-    <div class="challenge-box">
-        <input type="text" id="decrypt-input" placeholder="Plaintext here...">
-        <button onclick="checkAccess()">Decrypt</button>
+        <div class="loader"></div> <!--Loading spinner-->
+        <h3>System Locked</h3>
+        <p>Decrypt: <strong>IHHWVC</strong></p>
+        <div class="challenge-box">
+            <input type="text" id="decrypt-input" placeholder="Plaintext here...">
+            <button onclick="checkAccess()">Decrypt</button>
+        </div>
+        <!-- This will show Success, Error, or Override messages -->
+        <p id="status-msg" style="margin-top: 15px; font-weight: bold;"></p>
     </div>
-    <!-- This will show Success, Error, or Override messages -->
-    <p id="status-msg" style="margin-top: 15px; font-weight: bold;"></p>
-</div>
 
 
 
@@ -35,10 +35,10 @@
 
         <div class="description">
             <p>This cipher uses a 2-character key (a, b) consisting of 2 integers that represent
-            the coefficients in the linear function: f(x) = (ax + b) mod 26. For example, given a key of (1, 2) the equation would be
-            represented as f(x) = (x + 2) mod 26. (Note that if a = 1, the Affine Cipher is just a Caesar cipher.)</p>
+            the coefficients in the linear function: f(x) = (ax + b) mod 26. For example, a key of (1, 2) would result in the equation 
+            f(x) = (x + 2) mod 26. (Note that letting a = 1 just creates a Caesar cipher.)</p>
             <p>We assign the letters A-Z numerical values in increasing order, where A = 0 and Z = 25. The encrypted message is based
-            on the above function (where the original values of the letters are inputs). The outputs are then converted back to letters based on the letter-to-number assignment.</p>
+            on the function above (where the original values of the letters are inputs). The outputs are then converted back to letters based on the letter-to-number assignment.</p>
             <p>To decode an affine cipher, the value of the coefficient "a" must be coprime to 26. (Note that if non-integers in range are inputted for keys, they will be rounded down to the nearest integer.)</p>
         </div>
 

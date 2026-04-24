@@ -11,18 +11,10 @@ document.getElementById("encryptBtn").addEventListener("click", function(){
     let keyA = Math.floor(document.getElementById("keyA").value);
     let keyB = Math.floor(document.getElementById("keyB").value);
 
-    // checks if "a" value is coprime to 26 (other restrictions are built into html)
     if (!(coprime26.includes(keyA))){
         document.getElementById("encryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
         document.getElementById("encryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000);
-        return;
-    }
-    // checks if "b" value is integer and in range
-    else if(!(0 <= keyB && keyB <= 25)){
-        document.getElementById("encryptBtnMsg").textContent = 'Key "b" MUST be in range'; // warning text
-        document.getElementById("encryptBtnMsg").style.color = "red";
-        setTimeout(() => {document.getElementById("encryptBtnMsg").textContent = ''}, 2000); // clears text after 2s
         return;
     }
     let plaintext_string = document.getElementById("plaintext").value;
@@ -35,15 +27,9 @@ document.getElementById("decryptBtn").addEventListener("click", function(){
     let keyA = Math.floor(document.getElementById("keyA").value);
     let keyB = Math.floor(document.getElementById("keyB").value);
 
-    // checks if "a" value is coprime to 26 (other restrictions are built into html)
-    if (!(coprime26.includes(keyA))){
-        document.getElementById("decryptBtnMsg").textContent = 'Key "a" MUST be coprime to 26 AND in range';
-        document.getElementById("decryptBtnMsg").style.color = "red";
-        setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
-        return;
-    }
-    else if(!(0 <= keyB && keyB <= 25)){
-        document.getElementById("decryptBtnMsg").textContent = 'Key "b" MUST be in range';
+    let validation = validateKey(keyA, keyB);
+    if (!validation.valid) {
+        document.getElementById("decryptBtnMsg").textContent = validation.message;
         document.getElementById("decryptBtnMsg").style.color = "red";
         setTimeout(() => {document.getElementById("decryptBtnMsg").textContent = ''}, 2000);
         return;
@@ -127,6 +113,18 @@ document.getElementById("findKeyBtn").addEventListener("click",function(){
     }
 })
 
+// combined/extracted shared function in encrypt/decrypt button clicks
+function validateKey(keyA, keyB) {
+    // checks if "a" value is coprime to 26
+    if (!coprime26.includes(keyA)) {
+        return { valid: false, message: 'Key "a" MUST be coprime to 26 AND in range' };
+    }
+    // checks if "b" value is integer and in range
+    else if (!(0 <= keyB && keyB <= 25)) { 
+        return { valid: false, message: 'Key "b" MUST be in range' };
+    }
+    return { valid: true };
+}
 function letterToNumValue(letter){ // function converts letters to 0-25 values rather than ASCII
     let num = letterToNum(letter);
     if (lowerASCII <= num && num <= lowerASCII + ALPHABET_SIZE - 1){
@@ -222,20 +220,21 @@ function affine_transform(keyA, keyB, input_string, encrypt_mode = true){
 
 
 
-// Loading screen
+// Loading screen (AI-assisted)
 const CORRECT_ANSWER = "AFFINE";
 let attempts = 0;
 const MAX_ATTEMPTS = 3;
 
 function hideLoader() {
-    const loader = document.getElementById("loader-wrapper");
-    loader.classList.add("loader-hidden");
-    loader.addEventListener("transitionend", () => {
+    const loader = document.getElementById("loader-wrapper"); // loader container
+    loader.classList.add("loader-hidden"); // adds class to hide the loader
+    loader.addEventListener("transitionend", () => { // waits for CSS animation to finish
+        // deletes the loader from document to prevent interference
         if (loader.parentNode) document.body.removeChild(loader);
     });
 }
 function triggerDramaticSuccess() {
-    const loader = document.getElementById("loader-wrapper");
+    const loader = document.getElementById("loader-wrapper"); 
     const statusMsg = document.getElementById("status-msg");
 
     // 1. Add the flash and pulsing text
@@ -247,7 +246,7 @@ function triggerDramaticSuccess() {
     // 2. Wait a moment for the user to enjoy the win, then zoom out
     setTimeout(() => {
         loader.classList.add("zoom-out-exit");
-    }, 1000);
+    }, 1500);
 
     // 3. Finally remove from DOM
     setTimeout(() => {
@@ -258,6 +257,7 @@ function triggerDramaticSuccess() {
 }
 
 function checkAccess() {
+    // Converts user input to uppercase, and removes any accidental spaces
     const userInput = document.getElementById("decrypt-input").value.toUpperCase().trim();
     const statusMsg = document.getElementById("status-msg");
 
@@ -266,11 +266,11 @@ function checkAccess() {
     } else {
         attempts++;
         if (attempts < MAX_ATTEMPTS) {
-            statusMsg.style.color = "#e74c3c"; // Red
+            statusMsg.style.color = "red";
             statusMsg.innerText = `Access Denied. ${MAX_ATTEMPTS - attempts} tries left.`;
             document.getElementById("decrypt-input").value = "";
         } else {
-            statusMsg.style.color = "#f39c12"; // Orange
+            statusMsg.style.color = "orange";
             statusMsg.innerText = "Too many attempts. Bypassing security...";
             setTimeout(hideLoader, 2000); // Delay for the "override" message
         }
