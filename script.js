@@ -21,8 +21,11 @@ document.getElementById("clearAllBtn").addEventListener("click", function(){
     document.getElementById("knownCiphertext").value = "";
     document.getElementById("aKey").textContent = "a:";
     document.getElementById("bKey").textContent = "b:";
+    // resets character count
+    document.getElementById("plaintextCount").textContent = "Characters: 0";
+    document.getElementById("ciphertextCount").textContent = "Characters: 0";
     this.textContent = "All Cleared!";
-    setTimeout(() => {this.textContent = 'Clear All'}, 1500);
+    setTimeout(() => {this.textContent = 'Clear All'}, 1000);
 })
 
 document.getElementById("randomKeyBtn").addEventListener("click", function(){
