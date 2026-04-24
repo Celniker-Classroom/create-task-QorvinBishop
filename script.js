@@ -21,6 +21,17 @@ document.getElementById("clearAllBtn").addEventListener("click", function(){
     document.getElementById("knownCiphertext").value = "";
     document.getElementById("aKey").textContent = "a:";
     document.getElementById("bKey").textContent = "b:";
+    this.textContent = "All Cleared!";
+    setTimeout(() => {this.textContent = 'Clear All'}, 1500);
+})
+
+document.getElementById("randomKeyBtn").addEventListener("click", function(){
+    // random element in array coprime26
+    let randomA = coprime26[Math.floor(Math.random() * coprime26.length)];
+    // random integer 0-25
+    let randomB = Math.floor(Math.random() * ALPHABET_SIZE);
+    document.getElementById("keyA").value = randomA;
+    document.getElementById("keyB").value = randomB;
 })
 
 document.getElementById("encryptBtn").addEventListener("click", function(){
